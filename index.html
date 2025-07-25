@@ -94,10 +94,11 @@
             text-align: center;
         }
 
-        .modal-content img {
+        /* Styling for the iframe */
+        iframe {
             width: 100%;
+            height: 480px;
             border-radius: 10px;
-            margin-bottom: 20px;
         }
 
         .close {
@@ -135,7 +136,13 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <img src="img.jfif" alt="Good Night">
+            <!-- YouTube Video Embed -->
+            <iframe src="https://www.youtube.com/embed/iyitLrD83y0" 
+                    title="Lullaby for Babies To Go To Sleep 8 HOURS Baby Lullaby Songs To Help Baby Sleep" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen></iframe>
             <p>Good night, sleep well 🌙</p>
         </div>
     </div>
