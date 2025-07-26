@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yachify</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<style>
+    /* style.css */
+
+
+
+
+.songs {
+  background: linear-gradient(to bottom right, #2c3e50, #34495e);
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  color: white;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.songs h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+#now-playing {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+audio {
+  width: 100%;
+  outline: none;
+  border-radius: 10px;
+}
+
+</style>
+<body>
+  <header>
+    <h1 style="color: aliceblue;">Yachify</h1>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2 style="color: white;">Your Music, Your Way</h2>
+      <p style="color: white;">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
+    </section>
+
+    <section class="songs">
+      <h2>Featured Songs</h2>
+      <p id="now-playing" style="color: rgb(61, 138, 226); font-weight: bold;"></p>
+      <audio id="audio-player" controls autoplay></audio>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <ul>
+      <p>&copy; Mizzwa</p>
+    </ul>
+  </nav>
+
+  <script>
+    const songs = [
+      {
+        file: "music/multo.mp3",
+        title: "Multo - Cup of Joe (Official Lyric Video)"
+      },
+      {
+        file: "music/kayapala.mp3",
+        title: "Kaya Pala by Patch Quiwa"
+      },
+      {
+        file: "music/simula.mp3",
+        title: "Simula Pa nung Una by Patch Quiwa"
+      },
+      {
+        file: "music/opm.m4a",
+        title: "TOP OPM Songs 2025 Credit to the Owner"
+      }
+    ];
+
+    let currentSong = 0;
+    const player = document.getElementById("audio-player");
+    const nowPlaying = document.getElementById("now-playing");
+
+    function playSong(index) {
+      if (index < songs.length) {
+        player.src = songs[index].file;
+        nowPlaying.textContent = "Now Playing: " + songs[index].title;
+        player.play();
+      }
+    }
+
+    player.addEventListener("ended", () => {
+      currentSong++;
+      if (currentSong < songs.length) {
+        playSong(currentSong);
+      }
+    });
+
+    // Start first song on page load
+    window.onload = () => playSong(currentSong);
+  </script>
+</body>
+</html>
