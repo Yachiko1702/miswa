@@ -68,7 +68,7 @@ audio {
     </ul>
   </nav>
 
- <script>
+<script>
   const songs = [
     {
       file: "multo.mp3",
@@ -87,25 +87,27 @@ audio {
     },
     {
       file: "https://www.youtube.com/embed/NmQUocxAvtY?list=RDNmQUocxAvtY&autoplay=1",
-      title: "TOP OPM Songs 2025 Credit to the Owner",
+      title: "TOP OPM Songs 2025 (YouTube Playlist)",
       type: "video"
     }
   ];
 
   let currentSong = 0;
-  const audioPlayer = document.getElementById("audio-player");
+  const player = document.getElementById("audio-player");
   const nowPlaying = document.getElementById("now-playing");
 
-  // Create an iframe for video
-  const videoFrame = document.createElement("iframe");
-  videoFrame.width = "100%";
-  videoFrame.height = "400";
-  videoFrame.frameBorder = "0";
-  videoFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-  videoFrame.allowFullscreen = true;
-  videoFrame.style.display = "none"; // Hide initially
+  // Create a video iframe but don't show it yet
+  const videoIframe = document.createElement("iframe");
+  videoIframe.width = "100%";
+  videoIframe.height = "480";
+  videoIframe.style.border = "none";
+  videoIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+  videoIframe.allowFullscreen = true;
+  videoIframe.style.display = "none";
 
-  document.querySelector(".songs").appendChild(videoFrame);
+  // Append it right below the audio player
+  const songSection = document.querySelector(".songs");
+  songSection.appendChild(videoIframe);
 
   function playSong(index) {
     if (index >= songs.length) return;
@@ -114,25 +116,32 @@ audio {
     nowPlaying.textContent = "Now Playing: " + song.title;
 
     if (song.type === "audio") {
-      videoFrame.style.display = "none";
-      audioPlayer.style.display = "block";
-      audioPlayer.src = song.file;
-      audioPlayer.play();
+      // Play audio
+      videoIframe.style.display = "none";
+      videoIframe.src = ""; // clear previous video
+      player.style.display = "block";
+      player.src = song.file;
+      player.play();
     } else if (song.type === "video") {
-      audioPlayer.pause();
-      audioPlayer.style.display = "none";
-      videoFrame.src = song.file;
-      videoFrame.style.display = "block";
+      // Show YouTube video
+      player.pause();
+      player.style.display = "none";
+      videoIframe.src = song.file;
+      videoIframe.style.display = "block";
     }
   }
 
-  audioPlayer.addEventListener("ended", () => {
+  // Automatically go to next audio track (won't work for video, needs manual input)
+  player.addEventListener("ended", () => {
     currentSong++;
     playSong(currentSong);
   });
 
-  window.onload = () => playSong(currentSong);
+  window.onload = () => {
+    playSong(currentSong);
+  };
 </script>
+
 
 </body>
 </html>
