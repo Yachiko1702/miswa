@@ -68,47 +68,71 @@ audio {
     </ul>
   </nav>
 
-  <script>
-    const songs = [
-      {
-        file: "multo.mp3",
-        title: "Multo - Cup of Joe (Official Lyric Video)"
-      },
-      {
-        file: "kayapala.mp3",
-        title: "Kaya Pala by Patch Quiwa"
-      },
-      {
-        file: "simula.mp3",
-        title: "Simula Pa nung Una by Patch Quiwa"
-      },
-      {
-        file: "opm.m4a",
-        title: "TOP OPM Songs 2025 Credit to the Owner"
-      }
-    ];
-
-    let currentSong = 0;
-    const player = document.getElementById("audio-player");
-    const nowPlaying = document.getElementById("now-playing");
-
-    function playSong(index) {
-      if (index < songs.length) {
-        player.src = songs[index].file;
-        nowPlaying.textContent = "Now Playing: " + songs[index].title;
-        player.play();
-      }
+ <script>
+  const songs = [
+    {
+      file: "multo.mp3",
+      title: "Multo - Cup of Joe (Official Lyric Video)",
+      type: "audio"
+    },
+    {
+      file: "kayapala.mp3",
+      title: "Kaya Pala by Patch Quiwa",
+      type: "audio"
+    },
+    {
+      file: "simula.mp3",
+      title: "Simula Pa nung Una by Patch Quiwa",
+      type: "audio"
+    },
+    {
+      file: "https://www.youtube.com/embed/NmQUocxAvtY?list=RDNmQUocxAvtY&autoplay=1",
+      title: "TOP OPM Songs 2025 Credit to the Owner",
+      type: "video"
     }
+  ];
 
-    player.addEventListener("ended", () => {
-      currentSong++;
-      if (currentSong < songs.length) {
-        playSong(currentSong);
-      }
-    });
+  let currentSong = 0;
+  const audioPlayer = document.getElementById("audio-player");
+  const nowPlaying = document.getElementById("now-playing");
 
-    // Start first song on page load
-    window.onload = () => playSong(currentSong);
-  </script>
+  // Create an iframe for video
+  const videoFrame = document.createElement("iframe");
+  videoFrame.width = "100%";
+  videoFrame.height = "400";
+  videoFrame.frameBorder = "0";
+  videoFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+  videoFrame.allowFullscreen = true;
+  videoFrame.style.display = "none"; // Hide initially
+
+  document.querySelector(".songs").appendChild(videoFrame);
+
+  function playSong(index) {
+    if (index >= songs.length) return;
+
+    const song = songs[index];
+    nowPlaying.textContent = "Now Playing: " + song.title;
+
+    if (song.type === "audio") {
+      videoFrame.style.display = "none";
+      audioPlayer.style.display = "block";
+      audioPlayer.src = song.file;
+      audioPlayer.play();
+    } else if (song.type === "video") {
+      audioPlayer.pause();
+      audioPlayer.style.display = "none";
+      videoFrame.src = song.file;
+      videoFrame.style.display = "block";
+    }
+  }
+
+  audioPlayer.addEventListener("ended", () => {
+    currentSong++;
+    playSong(currentSong);
+  });
+
+  window.onload = () => playSong(currentSong);
+</script>
+
 </body>
 </html>
