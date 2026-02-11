@@ -1,148 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yachify</title>
-  <link rel="stylesheet" href="styles/style.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine's Day ❤️</title>
+
 <style>
-  
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        overflow: hidden;
+        color: white;
+    }
 
+    h1 {
+        margin-top: 100px;
+        font-size: 3em;
+        animation: fadeIn 2s ease-in-out;
+    }
 
+    p {
+        font-size: 1.5em;
+        margin: 20px;
+        animation: fadeIn 3s ease-in-out;
+    }
 
+    button {
+        padding: 15px 30px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 30px;
+        background-color: white;
+        color: #ff4b7d;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-.songs {
-  background: linear-gradient(to bottom right, #2c3e50, #34495e);
-  padding: 2rem;
-  margin: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  color: white;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
+    button:hover {
+        background-color: #ff4b7d;
+        color: white;
+        transform: scale(1.1);
+    }
 
-.songs h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
+    .hidden-message {
+        display: none;
+        margin-top: 20px;
+        font-size: 1.8em;
+        animation: fadeIn 1s ease-in-out;
+    }
 
-#now-playing {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 0.75rem;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-}
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
 
-audio {
-  width: 100%;
-  outline: none;
-  border-radius: 10px;
-}
+    /* Floating hearts */
+    .heart {
+        position: absolute;
+        bottom: -50px;
+        font-size: 24px;
+        animation: floatUp 6s linear infinite;
+    }
 
+    @keyframes floatUp {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
 </style>
+</head>
+
 <body>
-  <header>
-    <h1 style="color: aliceblue;">Yachify</h1>
-  </header>
 
-  <main>
-    <section class="intro">
-      <h2 style="color: white;">Kumain Kana Ba?</h2>
-      <p style="color: white">Hoping na makapasa Ka!</p>
-      
-    </section>
+<h1>Happy Valentine's Day ❤️</h1>
+<p>To my friend miswa 😊</p>
 
-    <section class="songs">
-      <h2>Featured Songs</h2>
-      <p id="now-playing" style="color: rgb(61, 138, 226); font-weight: bold;"></p>
-      <audio id="audio-player" controls autoplay></audio>
-    </section>
-  </main>
+<button onclick="showMessage()">Click for a Surprise 💌</button>
 
-  <nav class="bottom-nav">
-    <ul>
-      <p>&copy; Mizzwa</p>
-    </ul>
-  </nav>
+<div class="hidden-message" id="loveMessage">
+    Happy Valentine's Day. I hope you achieve your goal this year ❤️
+</div>
 
 <script>
-  const songs = [
-    {
-      file: "multo.mp3",
-      title: "Multo - Cup of Joe (Official Lyric Video)",
-      type: "audio"
-    },
-    {
-      file: "kayapala.mp3",
-      title: "Kaya Pala by Patch Quiwa",
-      type: "audio"
-    },
-    {
-      file: "simula.mp3",
-      title: "Simula Pa nung Una by Patch Quiwa",
-      type: "audio"
-    },
-    {
-      file: "https://www.youtube.com/embed/NmQUocxAvtY?list=RDNmQUocxAvtY&autoplay=1",
-      title: "TOP OPM Songs 2025 (YouTube Playlist)",
-      type: "video"
-    }
-  ];
+function showMessage() {
+    document.getElementById("loveMessage").style.display = "block";
+}
 
-  let currentSong = 0;
-  const player = document.getElementById("audio-player");
-  const nowPlaying = document.getElementById("now-playing");
+// Create floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
 
-  // Create a video iframe but don't show it yet
-  const videoIframe = document.createElement("iframe");
-  videoIframe.width = "100%";
-  videoIframe.height = "480";
-  videoIframe.style.border = "none";
-  videoIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-  videoIframe.allowFullscreen = true;
-  videoIframe.style.display = "none";
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
 
-  // Append it right below the audio player
-  const songSection = document.querySelector(".songs");
-  songSection.appendChild(videoIframe);
-
-  function playSong(index) {
-    if (index >= songs.length) return;
-
-    const song = songs[index];
-    nowPlaying.textContent = "Now Playing: " + song.title;
-
-    if (song.type === "audio") {
-      // Play audio
-      videoIframe.style.display = "none";
-      videoIframe.src = ""; // clear previous video
-      player.style.display = "block";
-      player.src = song.file;
-      player.play();
-    } else if (song.type === "video") {
-      // Show YouTube video
-      player.pause();
-      player.style.display = "none";
-      videoIframe.src = song.file;
-      videoIframe.style.display = "block";
-    }
-  }
-
-  // Automatically go to next audio track (won't work for video, needs manual input)
-  player.addEventListener("ended", () => {
-    currentSong++;
-    playSong(currentSong);
-  });
-
-  window.onload = () => {
-    playSong(currentSong);
-  };
+setInterval(createHeart, 500);
 </script>
-
 
 </body>
 </html>
